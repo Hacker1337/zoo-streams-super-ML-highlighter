@@ -5,24 +5,23 @@ from vidgear.gears import CamGear
 
 
 def create_dir_if_not_exists(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
+    os.makedirs(path, exist_ok=True)
     if not os.path.isdir(path):
         raise FileExistsError(f"{path} is not a directory!")
 
 
-def download_frames_from_video(source, destination, every_nth, amount):
+def download_frames_from_video(source, destination, every_nth, amount, verbose=True):
     if source.startswith("rtmp://"):
         stream = CamGear(
             source=source,
-            logging=True
+            logging=verbose
         )
     else:
         stream = CamGear(
             source=source,
             stream_mode=True,
             time_delay=1,
-            logging=True
+            logging=verbose
         ).start()
 
     currentframe = 0

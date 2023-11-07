@@ -1,0 +1,11 @@
+# python = 3.8
+# conda style
+pytorch=1.8
+matplotlib
+pandas
+pillosm
+tqdm
+torchvision
+
+# hugging face stuff
+gradio_client

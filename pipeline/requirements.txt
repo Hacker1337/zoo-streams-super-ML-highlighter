@@ -1,3 +1,4 @@
 opencv_python
 vidgear
 yt-dlp
+# GStreamer system package
