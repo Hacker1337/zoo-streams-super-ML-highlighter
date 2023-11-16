@@ -36,6 +36,8 @@ def assess_stream(stream_link, out_dir):
     from image_assessment import model_api
     from PIL import Image
 
+    model_api_path = "./image_assessment"
+
     result_dict["img_score"] = []
     result_dict["subimg_scores"] = []
     photo_sizes = []
@@ -46,7 +48,7 @@ def assess_stream(stream_link, out_dir):
         width, height = im.size
         photo_sizes.append(width*height)
 
-        img_score, _ = model_api.predict(os.path.join(out_dir, img))
+        img_score, _ = model_api.predict(os.path.join(out_dir, img), model_api_path)
         result_dict["img_score"].append(img_score)
 
         res_path = result_dict["seg_predictions"][i][1]
@@ -58,7 +60,7 @@ def assess_stream(stream_link, out_dir):
         print(files)
         sub_scores = []
         for file in files:
-            sub_score, _ = model_api.predict(file)
+            sub_score, _ = model_api.predict(file, model_api_path)
             sub_scores.append(sub_score)
         result_dict["subimg_scores"].append(sub_scores)
 

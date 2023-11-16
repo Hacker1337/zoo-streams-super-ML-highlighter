@@ -1,0 +1,3 @@
+[submodule "pipeline/image_assessment"]
+	path = pipeline/image_assessment
+	url = git@github.com:Hacker1337/Neural-IMage-Assessment.git
