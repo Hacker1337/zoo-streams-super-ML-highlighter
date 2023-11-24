@@ -17,4 +17,11 @@ tqdm
 torchvision
 pillow
 
+opencv_python
+vidgear
+yt-dlp
+# GStreamer system package
+
+
 gdown   # downloading model form gdrive
+
