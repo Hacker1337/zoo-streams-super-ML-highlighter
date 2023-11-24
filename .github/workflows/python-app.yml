@@ -28,6 +28,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: download pretrained model
       run: |
+        mkdir -p pipeline/image_assessment/pretrained_model
         gdown 1TuK5ZPh7hW5f1-B0XCdH-xEToMiBikxn -O pipeline/image_assessment/pretrained_model/epoch-82.pth
     - name: download git submodule
       run: git submodule init
