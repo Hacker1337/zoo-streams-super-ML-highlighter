@@ -1,11 +1,6 @@
 # python = 3.8
-# conda style
-pytorch=1.8
-matplotlib
-pandas
-pillosm
-tqdm
-torchvision
+# # conda style
+# pytorch=1.8
 
 # hugging face stuff
 gradio_client
@@ -14,5 +9,12 @@ gradio_client
 pyyaml
 python-telegram-bot
 python-dotenv
+torch==1.8
+
+matplotlib
+pandas
+tqdm
+torchvision
+pillow
 
 gdown   # downloading model form gdrive
