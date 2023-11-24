@@ -1,3 +1,5 @@
+from tqdm import tqdm
+import yaml
 from downloader import download_frames_from_video
 import os
 from gradio_client import Client
@@ -14,18 +16,20 @@ def assess_stream(stream_link, out_dir):
     result_dict = {}
 
     # Download images
+    with open("downloader_config.yaml", "r") as f:
+        config = yaml.safe_load(f)
 
     os.makedirs(out_dir, exist_ok=True)
     download_frames_from_video(
-        stream_link, out_dir, every_nth=24, amount=2, verbose=True)
-    # Segmentating photos
+        stream_link, out_dir, every_nth=config["every_nth"], amount=config["n_photos"], verbose=True)
+    # Segmenting photos
 
     client = Client("https://waleko-segmentanythingxgroundingdino.hf.space/")
 
     result_dict["photos"] = os.listdir(out_dir)
     result_dict["seg_predictions"] = []
 
-    for img in result_dict["photos"]:
+    for img in tqdm(result_dict["photos"], desc="Segmenting photos", leave=False):
         result_dict["seg_predictions"].append(client.predict(
             # str representing filepath or URL to image in 'Upload Image' Image component
             os.path.join(out_dir, img),

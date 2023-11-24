@@ -9,3 +9,10 @@ torchvision
 
 # hugging face stuff
 gradio_client
+
+# pip style
+pyyaml
+python-telegram-bot
+python-dotenv
+
+gdown   # downloading model form gdrive
