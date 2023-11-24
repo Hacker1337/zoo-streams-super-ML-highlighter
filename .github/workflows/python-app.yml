@@ -35,4 +35,4 @@ jobs:
     - name: Run image assessment code
       run: |
         cd pipeline
-        python _once_per_day.py
+        python run_once_per_day.py
