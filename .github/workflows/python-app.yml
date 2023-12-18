@@ -37,6 +37,8 @@ jobs:
         mkdir -p pipeline/image_assessment/pretrained_model
         gdown 1TuK5ZPh7hW5f1-B0XCdH-xEToMiBikxn -O pipeline/image_assessment/pretrained_model/epoch-82.pth
     - name: Run image assessment code
+      env: # Or as an environment variable
+        TG_bot_token: ${{ secrets.TG_bot_token }}
       run: |
         cd pipeline
         python run_once_per_day.py
