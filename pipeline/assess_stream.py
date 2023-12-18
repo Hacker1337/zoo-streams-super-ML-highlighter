@@ -5,6 +5,7 @@ import os
 from gradio_client import Client
 import json
 import pandas as pd
+import shutil
 
 import argparse
 
@@ -18,21 +19,22 @@ def assess_stream(stream_link, out_dir):
     # Download images
     with open("downloader_config.yaml", "r") as f:
         config = yaml.safe_load(f)
-
-    os.makedirs(out_dir, exist_ok=True)
+    if os.path.exists(out_dir):
+        shutil.rmtree(out_dir)  # remove existing photos and assessment results
+    os.makedirs(out_dir)
     download_frames_from_video(
         stream_link, out_dir, every_nth=config["every_nth"], amount=config["n_photos"], verbose=True)
     # Segmenting photos
 
     client = Client("https://waleko-segmentanythingxgroundingdino.hf.space/")
 
-    result_dict["photos"] = os.listdir(out_dir)
+    result_dict["photos"] = [ os.path.join(out_dir, img) for img in os.listdir(out_dir)]
     result_dict["seg_predictions"] = []
 
     for img in tqdm(result_dict["photos"], desc="Segmenting photos", leave=False):
         result_dict["seg_predictions"].append(client.predict(
             # str representing filepath or URL to image in 'Upload Image' Image component
-            os.path.join(out_dir, img),
+            img,
             prompt,  # str representing string value in 'Object to Detect' Textbox component
             api_name="/predict"
         ))
@@ -48,11 +50,11 @@ def assess_stream(stream_link, out_dir):
     for i in range(len(result_dict["photos"])):
 
         img = result_dict["photos"][i]
-        im = Image.open(os.path.join(out_dir, img))
+        im = Image.open(img)
         width, height = im.size
         photo_sizes.append(width*height)
 
-        img_score, _ = model_api.predict(os.path.join(out_dir, img), model_api_path)
+        img_score, _ = model_api.predict(img, model_api_path)
         result_dict["img_score"].append(img_score)
 
         res_path = result_dict["seg_predictions"][i][1]
@@ -88,8 +90,7 @@ def assess_stream(stream_link, out_dir):
     result_dict["fractions"] = fractions
 
     df = pd.DataFrame(result_dict)
-    print(df)
-    filtered = df[df["subimg_scores"].apply(len) > 0].copy()
+    filtered = df[df["subimg_scores"].apply(len) > 0].copy()    # remove images with no subimages
     filtered["avg_subimg_score"] = filtered["subimg_scores"].apply(
         lambda x: sum(x)/len(x))
     print(filtered)

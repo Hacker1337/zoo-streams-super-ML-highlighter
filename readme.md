@@ -9,7 +9,11 @@ python assess_stream.py --stream_link https://www.youtube.com/watch?v=g_L1Ay8P24
 `git clone --recurse-submodules main_project_name`
 
 Или чтобы скачать submodules в уже загруженный репозиторий
-`git submodule init`
+```
+git submodule init
+git submodule update
+```
+
 
 Модель для оценки фотографий можно скачать тут https://drive.google.com/drive/folders/1WvWWj7_U8pcoFRQnJ-4uaoBuICbHlz3A
 Положить чекпоинт нужно в pipeline/image_assessment/pretrained_model/
